@@ -22,6 +22,7 @@ import android.app.SearchManager;
 import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.os.Bundle;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -119,6 +120,8 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Objects;
 import com.google.common.collect.Iterables;
 
+
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -163,6 +166,9 @@ public class ContactDetailFragment extends Fragment implements FragmentKeyListen
     private QuickFix mQuickFix;
     private boolean mContactHasSocialUpdates;
     private boolean mShowStaticPhoto = true;
+
+    public final static String ACTION_CALL_DIAL = "android.intent.action.BONOVO_CALL_DIAL";
+    public final static String KEY_PHONE_NUMBER = "phone_number";
 
     private final QuickFix[] mPotentialQuickFixes = new QuickFix[] {
             new MakeLocalCopyQuickFix(),
@@ -1360,7 +1366,17 @@ public class ContactDetailFragment extends Fragment implements FragmentKeyListen
 
         @Override
         public void click(View clickedView, Listener fragmentListener) {
-            if (fragmentListener == null || intent == null) return;
+            if (fragmentListener == null || intent == null) {
+		   Log.v("contact","data is " + data);
+		   try {  
+                       Intent myIntent = new Intent(ACTION_CALL_DIAL);
+                       myIntent.putExtra(KEY_PHONE_NUMBER, data);
+                       context.sendBroadcast(myIntent);
+               		} catch (Exception e) {
+                       	   e.printStackTrace();                                   
+               	}
+		   return;
+		 }
             fragmentListener.onItemClicked(intent);
         }
     }
