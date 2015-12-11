@@ -63,7 +63,7 @@ public final class PhoneCapabilityTester {
 
     private static void initialize(Context context) {
         final TelephonyManager telephonyManager = new TelephonyManager(context);
-        sIsPhone = telephonyManager.isVoiceCapable();
+        sIsPhone = true;
         sIsSipPhone = sIsPhone && SipManager.isVoipSupported(context);
         sIsInitialized = true;
     }
